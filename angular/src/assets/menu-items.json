@@ -1,0 +1,154 @@
+[
+  {
+    "label": "Dashboard",
+    "url": "/app/home",
+    "icon": "fas fa-home"
+  },
+  {
+    "label": "Clients",
+    "url": "",
+    "icon": "fas fa-user",
+    "children": [
+      {
+        "label": "Client List",
+        "url": "/app/client",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Client Ledger",
+        "url": "/app/client-ledger",
+        "icon": "far fa-circle"
+      }
+    ]
+  },
+  {
+    "label": "Vendors",
+    "url": "",
+    "icon": "fas fa-truck",
+    "children": [
+      {
+        "label": "Vendor List",
+        "url": "/app/vendor",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Vendor Ledger",
+        "url": "/app/vendor-ledger",
+        "icon": "far fa-circle"
+      }
+    ]
+  },
+  {
+    "label": "Inventory",
+    "url": "",
+    "icon": "fas fa-boxes",
+    "children": [
+      {
+        "label": "Products",
+        "url": "/app/product",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Inventory",
+        "url": "/app/inventory",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Inventory Transactions",
+        "url": "/app/inventory-transaction",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Stock Transfers",
+        "url": "/app/stock-transfer",
+        "icon": "far fa-circle"
+      }
+    ]
+  },
+  {
+    "label": "Purchases",
+    "url": "",
+    "icon": "fas fa-shopping-cart",
+    "children": [
+      {
+        "label": "Purchase",
+        "url": "/app/purchase",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Purchase Items",
+        "url": "/app/purchase-item",
+        "icon": "far fa-circle"
+      }
+    ]
+  },
+  {
+    "label": "Sales",
+    "url": "",
+    "icon": "fas fa-cash-register",
+    "children": [
+      {
+        "label": "Sales",
+        "url": "/app/sale",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Sale Items",
+        "url": "/app/sale-item",
+        "icon": "far fa-circle"
+      }
+    ]
+  },
+  {
+    "label": "Settings",
+    "url": "",
+    "icon": "fas fa-cog",
+    "children": [
+      {
+        "label": "POS Settings",
+        "url": "/app/pos-setting",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Locations",
+        "url": "/app/location",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Categories",
+        "url": "/app/category",
+        "icon": "far fa-circle"
+      },
+      {
+        "label": "Configuration",
+        "url": "/app/configuration",
+        "icon": "far fa-circle"
+      }
+    ]
+  },
+  {
+    "label": "Administration",
+    "url": "",
+    "icon": "fas fa-tools",
+    "children": [
+      {
+        "label": "Users",
+        "url": "/app/users",
+        "icon": "far fa-circle",
+        "permission": "Pages.Users"
+      },
+      {
+        "label": "Roles",
+        "url": "/app/roles",
+        "icon": "far fa-circle",
+        "permission": "Pages.Roles"
+      },
+      {
+        "label": "Tenants",
+        "url": "/app/tenants",
+        "icon": "far fa-circle",
+        "permission": "Pages.Tenants"
+      }
+    ]
+  }
+]

@@ -112,14 +112,14 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
       createOrEditUserDialog = this._modalService.show(
         CreateUserDialogComponent,
         {
-          class: 'modal-lg',
+          class: 'modal-lg top-left',
         }
       );
     } else {
       createOrEditUserDialog = this._modalService.show(
         EditUserDialogComponent,
         {
-          class: 'modal-lg',
+          class: 'modal-lg top-left',
           initialState: {
             id: id,
           },

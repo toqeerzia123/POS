@@ -9,7 +9,7 @@ import {
 import {BehaviorSubject} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {MenuItem} from '@shared/layout/menu-item';
-
+import{MenuService} from '@shared/services/menu.service';
 @Component({
     selector: 'sidebar-menu',
     templateUrl: './sidebar-menu.component.html'
@@ -21,14 +21,15 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     routerEvents: BehaviorSubject<RouterEvent> = new BehaviorSubject(undefined);
     homeRoute = '/app/about';
 
-    constructor(injector: Injector, private router: Router) {
+    constructor(injector: Injector, private router: Router,private menuService:MenuService  ) {
         super(injector);
         this.router.events.subscribe(this.routerEvents);
     }
 
     ngOnInit(): void {
-        this.menuItems = this.getMenuItems();
-        this.patchMenuItems(this.menuItems);
+    this.menuService.getMenuItems().subscribe(menu => {
+    this.menuItems = menu;
+      this.patchMenuItems(this.menuItems);
         this.routerEvents
             .pipe(filter((event) => event instanceof NavigationEnd))
             .subscribe((event) => {
@@ -39,6 +40,9 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                     this.activateMenuItems('/' + primaryUrlSegmentGroup.toString());
                 }
             });
+  });
+
+      
     }
 
     getMenuItems(): MenuItem[] {

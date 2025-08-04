@@ -23,6 +23,27 @@ import { ChangePasswordComponent } from './users/change-password/change-password
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] }
                 ]
+            },
+            {
+                    path: 'client',
+                        loadChildren: () =>
+                     import('./core/clients/clients.module').then(
+            (m) => m.ClientsModule
+           ),
+            },
+             {
+                    path: 'vendor',
+                        loadChildren: () =>
+                     import('./core/clients/clients.module').then(
+            (m) => m.ClientsModule
+           ),
+            },
+               {
+                    path: 'vendor',
+                        loadChildren: () =>
+                     import('./core/clients/clients.module').then(
+            (m) => m.ClientsModule
+           ),
             }
         ])
     ],

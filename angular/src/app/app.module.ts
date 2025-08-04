@@ -40,7 +40,7 @@ import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 
 @NgModule({
-    declarations: [
+    declarations: [	
         AppComponent,
         HomeComponent,
         AboutComponent,
@@ -67,8 +67,8 @@ import { SidebarMenuComponent } from './layout/sidebar-menu.component';
         SidebarComponent,
         SidebarLogoComponent,
         SidebarUserPanelComponent,
-        SidebarMenuComponent
-    ],
+        SidebarMenuComponent,
+   ],
     imports: [
         CommonModule,
         FormsModule,
