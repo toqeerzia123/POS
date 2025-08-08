@@ -17,6 +17,11 @@
     <None Remove="Reports\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.10" />
+    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.21" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\IPOC.Core\IPOC.Core.csproj" />
   </ItemGroup>
 </Project>

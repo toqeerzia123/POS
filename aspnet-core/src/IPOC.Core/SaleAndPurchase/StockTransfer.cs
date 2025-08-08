@@ -13,4 +13,6 @@ public class StockTransfer:FullAuditedEntity<Guid>
     public Guid ToLocationId { get; set; }
     public int Quantity { get; set; }
     public DateTime TransferDate { get; set; }
+    public string InvoiceNumber { get; set; }
+    public string Status { get; set; }
 }

@@ -37,6 +37,7 @@ namespace IPOC.EntityFrameworkCore
         public DbSet<Client> Clients { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<VendorLedgerEntry> VendorLedgerEntries { get; set; }
+        public DbSet<BarCode> BarCodes { get; set; }
 
     }
 }

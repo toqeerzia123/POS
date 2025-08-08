@@ -16,4 +16,9 @@ public class Category: FullAuditedEntity<Guid>
     public ICollection<Product> Products { get; set; }
     public ICollection<CategoryImage> CategoryImages { get; set; }
 
+    // Self-referencing for subcategories
+    public Guid? ParentCategoryId { get; set; } // null means it's a top-level category
+    public Category? ParentCategory { get; set; }
+    public ICollection<Category> Subcategories { get; set; }
+
 }

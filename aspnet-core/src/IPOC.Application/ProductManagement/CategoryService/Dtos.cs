@@ -13,6 +13,10 @@ public class CategoryDto : FullAuditedEntityDto<Guid>
     public string Description { get; set; }
     public bool IsActive { get; set; }
     public List<CategoryImageDto> CategoryImages { get; set; }
+
+    public Guid? ParentCategoryId { get; set; } // null means it's a top-level category
+    public Category? ParentCategory { get; set; }
+    public ICollection<Category> Subcategories { get; set; }
 }
 
 public class CreateUpdateCategoryDto
@@ -21,6 +25,7 @@ public class CreateUpdateCategoryDto
     public string ImageUrl { get; set; }
     public string Description { get; set; }
     public bool IsActive { get; set; }
+    public Guid? ParentCategoryId { get; set; } // null means it's a top-level category
     public List<CreateUpdateCategoryImageDto> CategoryImages { get; set; } = new();
 }
 public class CategoryImageDto : FullAuditedEntityDto<Guid>

@@ -14,6 +14,9 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { ClientsComponent } from './clients/clients.component';
 import { ClientLedgerComponent } from './client-ledger/client-ledger.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { BarcodeComponent } from './barcode/barcode.component';
+import { TransferProductComponent } from './transfer-product/transfer-product.component';
+import { PurchaseProductComponent } from './purchase-product/purchase-product.component';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -31,6 +34,9 @@ export default [
     { path: 'clients', component: ClientsComponent },
     { path: 'client-ledger', component: ClientLedgerComponent },
     { path: 'categories', component: CategoriesComponent },
+    { path: 'barcode', component: BarcodeComponent },
+    { path: 'purchase-stock', component: PurchaseProductComponent },
+    { path: 'transfer-stock', component: TransferProductComponent },
 
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

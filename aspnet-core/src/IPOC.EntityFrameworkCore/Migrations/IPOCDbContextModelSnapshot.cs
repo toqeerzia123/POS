@@ -1577,6 +1577,52 @@ namespace IPOC.Migrations
                     b.ToTable("AbpUsers");
                 });
 
+            modelBuilder.Entity("IPOC.BarCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BarcodeType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarcodeValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAssigned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("BarCodes");
+                });
+
             modelBuilder.Entity("IPOC.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1616,7 +1662,12 @@ namespace IPOC.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ParentCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -2283,6 +2334,9 @@ namespace IPOC.Migrations
                     b.Property<Guid>("FromLocationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("InvoiceNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -2297,6 +2351,9 @@ namespace IPOC.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ToLocationId")
                         .HasColumnType("uniqueidentifier");
@@ -2726,6 +2783,24 @@ namespace IPOC.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
+            modelBuilder.Entity("IPOC.BarCode", b =>
+                {
+                    b.HasOne("IPOC.Product", "Product")
+                        .WithMany("Barcodes")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("IPOC.Category", b =>
+                {
+                    b.HasOne("IPOC.Category", "ParentCategory")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("ParentCategoryId");
+
+                    b.Navigation("ParentCategory");
+                });
+
             modelBuilder.Entity("IPOC.CategoryImage", b =>
                 {
                     b.HasOne("IPOC.Category", "Category")
@@ -2766,11 +2841,13 @@ namespace IPOC.Migrations
 
             modelBuilder.Entity("IPOC.Product", b =>
                 {
-                    b.HasOne("IPOC.Category", null)
+                    b.HasOne("IPOC.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("IPOC.ProductImage", b =>
@@ -2896,10 +2973,14 @@ namespace IPOC.Migrations
                     b.Navigation("CategoryImages");
 
                     b.Navigation("Products");
+
+                    b.Navigation("Subcategories");
                 });
 
             modelBuilder.Entity("IPOC.Product", b =>
                 {
+                    b.Navigation("Barcodes");
+
                     b.Navigation("ProductImages");
                 });
 

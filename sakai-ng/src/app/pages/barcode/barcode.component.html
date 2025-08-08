@@ -1,0 +1,86 @@
+<p-treetable 
+  [value]="treeTableValue" 
+  [columns]="cols" 
+  dataKey="key" 
+  [scrollable]="true" 
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <!-- HEADER TEMPLATE -->
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+
+  <!-- BODY TEMPLATE -->
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr [ttRow]="rowNode">
+      <td *ngFor="let col of columns">
+        <span class="flex items-center gap-2">
+          <p-treeTableToggler [rowNode]="rowNode" *ngIf="col.field === 'barcode'" />
+          <!-- Show plain barcode text -->
+          <span *ngIf="col.field === 'barcode'">
+            {{ rowData }}
+          </span>
+
+          <!-- Show buttons in 'Options' column -->
+      <ng-container *ngIf="col.field === 'option'">
+  <!-- If it's the root node (Unassigned) -->
+  <ng-container *ngIf="rowNode.parent === null; else leafButtons">
+        <p-button (click)="addbarcode()"  label="Add New" outlined />
+  </ng-container>
+
+  <!-- Otherwise show View and Print -->
+  <ng-template #leafButtons>
+                   
+                    <p-button label="Detail" severity="success" outlined />
+                    <p-button  (click)="onPrint(rowData)" label="Print" severity="info" outlined />
+                      <p-button label="Delete" severity="danger" outlined />
+  </ng-template>
+</ng-container>
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+</p-treetable>
+
+<p-dialog 
+    [(visible)]="barcodeDialogVisible"
+    [style]="{ 'max-width': '90vw', 'width': '550px','border-radius': 'unset','margin-right': '-1%' }"
+    [contentStyle]="{ 'overflow-y': 'auto' }"
+    header="Barcode Details"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false" 
+    position="right"
+    [showHeader]="true"
+    [closable]="true"
+    styleClass="custom-dialog"
+    [transitionOptions]="'150ms cubic-bezier(0.25, 0.8, 0.25, 1)'"
+>
+   <input pInputText type="text"  [(ngModel)]="newBarcodeValue" placeholder="Enter barcode value" />
+         <p-button label="Quntity" icon="pi pi-check" (click)="addbarcode()" />
+    <ng-template pTemplate="content">
+    
+ 
+<div *ngFor="let row of chunkedBarcodes" class="barcode-row">
+  <div class="barcode-line">
+    <img *ngFor="let barcode of row" [src]="barcode" alt="Generated Barcode" />
+  </div>
+  <hr class="dotted-line" />
+</div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2 p-4">
+            <p-button label="Cancel" icon="pi pi-times" (click)="hideDialog()" severity="secondary" [text]="true" />
+            <p-button label="Save" icon="pi pi-check" (click)="saveBarcode()" />
+        </div>
+    </ng-template>
+</p-dialog>
+
+ 
+
