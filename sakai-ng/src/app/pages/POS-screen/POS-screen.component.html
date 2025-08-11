@@ -1,3 +1,201 @@
-<p>
-  POS-screen works!
-</p>
+<div class="w-full h-screen p-4 flex flex-col bg-black text-white font-sans text-lg">
+  <header class="flex flex-wrap items-center justify-between mb-4">
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center font-extrabold text-xl shadow-lg">
+        iP
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight" style="color: white;">iPOS - Clothing Store</h1>
+        <p class="text-sm text-slate-400">Point of Sale — Quick Checkout</p>
+      </div>
+    </div>
+     <div class="glass p-3 rounded-xl flex items-center gap-3 text-lg font-medium shadow-md">
+  <div
+    class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md"
+    title="User"
+  >
+    <i class='bx bx-user'></i>
+  </div>
+  <span>Logged in as: {{ userName }}</span>
+</div>
+    <div class="glass p-3 rounded-xl flex items-center gap-3 text-lg font-medium shadow-md">
+      {{ currentDateTime }}
+    </div>
+  </header>
+
+  <main class="glass rounded-3xl p-5 shadow-lg flex flex-grow gap-4">
+    <!-- Left Section -->
+    <div class="w-8/12 flex flex-col">
+      <div class="flex items-center gap-3 mb-4">
+        <input
+          [(ngModel)]="barcode"
+          (keyup.enter)="addProductByBarcode()"
+          type="text"
+          placeholder="Scan barcode here..."
+          class="flex-1 p-3 rounded-xl border border-slate-700 bg-black/80 text-white"
+        />
+      </div>
+
+      <div class="grid grid-cols-5 gap-4 mb-4">
+        <input
+          [(ngModel)]="customerName"
+          type="text"
+          placeholder="Customer Name"
+          class="p-3 rounded-xl border border-slate-700 bg-black/80 text-white"
+        />
+        <input
+          [(ngModel)]="customerPhone"
+          type="text"
+          placeholder="Phone Number"
+          class="p-3 rounded-xl border border-slate-700 bg-black/80 text-white"
+        />
+        <input
+          [(ngModel)]="discountValue"
+          type="number"
+          placeholder="Discount Value"
+          class="p-3 rounded-xl border border-slate-700 bg-black/80 text-white"
+        />
+        <select [(ngModel)]="discountType" class="p-3 rounded-xl border border-slate-700 bg-black/80 text-white">
+          <option value="value">Value</option>
+          <option value="percent">%</option>
+        </select>
+        <select [(ngModel)]="paymentType" class="p-3 rounded-xl border border-slate-700 bg-black/80 text-white">
+          <option value="cash">Cash</option>
+          <option value="card">Card</option>
+          <option value="upi">UPI</option>
+        </select>
+      </div>
+
+      <div class="flex-grow overflow-hidden">
+        <table class="w-full text-base border border-slate-700 rounded-xl overflow-hidden">
+          <thead class="bg-slate-800/80">
+            <tr>
+              <th class="p-3 border border-slate-700">#</th>
+              <th class="p-3 border border-slate-700">Product Name</th>
+              <th class="p-3 border border-slate-700">Size</th>
+              <th class="p-3 border border-slate-700">Color</th>
+              <th class="p-3 border border-slate-700">Qty</th>
+              <th class="p-3 border border-slate-700">Price</th>
+              <th class="p-3 border border-slate-700">Total</th>
+              <th class="p-3 border border-slate-700">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cart; let i = index" class="hover:bg-slate-800/60">
+              <td class="p-2 border border-slate-700">{{ i + 1 }}</td>
+              <td class="p-2 border border-slate-700">{{ item.name }}</td>
+              <td class="p-2 border border-slate-700">{{ item.size }}</td>
+              <td class="p-2 border border-slate-700">{{ item.color }}</td>
+              <td class="p-2 border border-slate-700">
+                <input
+                  type="number"
+                  min="1"
+                  [(ngModel)]="item.qty"
+                  (change)="updateQty(item, item.qty)"
+                  class="w-16 p-1 border border-slate-700 rounded-lg bg-black/80 text-white text-center"
+                />
+              </td>
+              <td class="p-2 border border-slate-700">${{ item.price.toFixed(2) }}</td>
+              <td class="p-2 border border-slate-700">${{ (item.price * item.qty).toFixed(2) }}</td>
+              <td class="p-2 border border-slate-700">
+                <button
+                  (click)="removeItem(i)"
+                  class="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xl"
+                  title="Remove Item"
+                >
+                  <i class="bx bx-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4 grid grid-cols-3 gap-4 text-xl font-semibold">
+        <div>Total Qty: {{ totalQty }}</div>
+        <div>Total Amount: ${{ totalAmount.toFixed(2) }}</div>
+        <div>Discount Amount: ${{ discountAmount.toFixed(2) }}</div>
+        
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="w-4/12 grid grid-cols-2 gap-4 content-start">
+      <button class="p-6 rounded-2xl bg-red-500 hover:bg-red-600 transition flex flex-col items-center" title="Discard Bill">
+        <i class="bx bx-trash text-4xl"></i><span class="mt-2 text-lg">Discard</span>
+      </button>
+      <button class="p-6 rounded-2xl bg-gray-500 hover:bg-gray-600 transition flex flex-col items-center" title="Bills History">
+        <i class="bx bx-history text-4xl"></i><span class="mt-2 text-lg">History</span>
+      </button>
+      <button class="p-6 rounded-2xl bg-blue-500 hover:bg-blue-600 transition flex flex-col items-center" title="Refresh">
+        <i class="bx bx-refresh text-4xl"></i><span class="mt-2 text-lg">Refresh</span>
+      </button>
+      <button class="p-6 rounded-2xl bg-green-500 hover:bg-green-600 transition flex flex-col items-center" title="POS Location">
+        <i class="bx bx-map text-4xl"></i><span class="mt-2 text-lg">Location</span>
+      </button>
+      <button class="p-6 rounded-2xl bg-purple-500 hover:bg-purple-600 transition flex flex-col items-center" title="Dashboard">
+        <i class="bx bx-grid-alt text-4xl"></i><span class="mt-2 text-lg">Dashboard</span>
+      </button>
+      <button (click)="printReceipt()" class="p-6 rounded-2xl bg-yellow-400 hover:bg-yellow-500 text-black flex flex-col items-center" title="Print">
+        <i class="bx bx-printer text-4xl"></i><span class="mt-2 text-lg">Print</span>
+      </button>
+      <button (click)="checkout()" class="p-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white flex flex-col items-center" title="Checkout">
+        <i class="bx bx-credit-card text-4xl"></i><span class="mt-2 text-lg">Checkout</span>
+      </button>
+      <button  class="p-6 rounded-2xl bg-red-600 hover:bg-red-700 text-white flex flex-col items-center" title="Logout">
+  <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center text-xl shadow-md mb-2">
+    <i class="bx bx-log-out"></i>
+  </div>
+  <span class="mt-2 text-lg">Logout</span>
+</button>
+  <!-- Sync Data button -->
+  <button  class="p-6 rounded-2xl bg-yellow-600 hover:bg-yellow-700 text-white flex flex-col items-center" title="Sync Data">
+    <div class="w-8 h-8 rounded-full bg-yellow-800 flex items-center justify-center text-xl shadow-md mb-2">
+      <i class="bx bx-sync"></i>
+    </div>
+    <span class="mt-2 text-lg">Sync Data</span>
+  </button>
+
+  <!-- Day Close button -->
+  <button  class="p-6 rounded-2xl bg-green-600 hover:bg-green-700 text-white flex flex-col items-center" title="Day Close">
+    <div class="w-8 h-8 rounded-full bg-green-800 flex items-center justify-center text-xl shadow-md mb-2">
+      <i class="bx bx-calendar-check"></i>
+    </div>
+    <span class="mt-2 text-lg">Day Close</span>
+  </button>
+    </div>
+  </main>
+</div>
+<div id="invoice">
+  <!-- Your invoice layout here -->
+  <h2>iPOS Receipt</h2>
+  <div>Customer: {{ customerName }}</div>
+  <div>Phone: {{ customerPhone }}</div>
+  <hr />
+<table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+  <thead>
+    <tr>
+      <th style="border: 1px solid black; padding: 6px;">Item</th>
+      <th style="border: 1px solid black; padding: 6px;">Qty</th>
+      <th style="border: 1px solid black; padding: 6px;">Price</th>
+      <th style="border: 1px solid black; padding: 6px;">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of cart">
+      <td style="border: 1px solid black; padding: 6px;">{{ item.name }}</td>
+      <td style="border: 1px solid black; padding: 6px; text-align: center;">{{ item.qty }}</td>
+      <td style="border: 1px solid black; padding: 6px; text-align: right;">{{ item.price | number:'1.2-2' }}</td>
+      <td style="border: 1px solid black; padding: 6px; text-align: right;">{{ (item.price * item.qty) | number:'1.2-2' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+  <hr />
+  <div>Total: ${{ totalAmount | number:'1.2-2' }}</div>
+  <div>Discount: ${{ discountAmount | number:'1.2-2' }}</div>
+  <div>Payable: ${{ (totalAmount - discountAmount) | number:'1.2-2' }}</div>
+  <div>Payment Type: {{ paymentType }}</div>
+  <hr />
+  <p>Thank you for shopping with us!</p>
+</div>

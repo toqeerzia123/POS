@@ -17,9 +17,7 @@ public class InventoryDto
 
 public class CreateUpdateInventoryDto
 {
-    public Guid ProductId { get; set; }
     public Guid? LocationId { get; set; }
-    public int QuantityAvailable { get; set; }
-    public int QuantityReserved { get; set; }
+    public string InvoiceId { get; set; }
 }
 

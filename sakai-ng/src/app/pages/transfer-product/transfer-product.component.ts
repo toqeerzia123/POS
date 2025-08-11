@@ -259,20 +259,22 @@ sumQuantities(): number {
   return this.productpurchase.reduce((acc, x) => acc + x.quantity, 0);
 }
 
-SaveInoice() {
+transferStock() {
   debugger
-  if (this.productpurchase.length != 0) {
- let data = {
-  purchaseDate: new Date(),
-  vendorId: this.productForm.value.vendorName,
-  totalAmount: this.productpurchase.reduce((sum, item) => sum + (item.purchasePrice || 0), 0),
-  items: this.productpurchase.map(item => ({
-    productId: item.productId,
-    quantity: item.quantity,
-    unitPrice: item.purchasePrice,
-  }))
-};
-this.productService.purchase(data).subscribe({
+  var data:any[]=[];
+  this.productpurchase.forEach((item:any) => {
+    data.push({
+      productId: item.productId,
+      quantity: item.quantity,
+      FromLocationId: this.fromLocation?.value,
+      ToLocationId: this.toLocation?.value,
+      saleprice: item.saleprice,
+      purchasePrice: item.purchasePrice,
+      InvoiceNumber: this.invoiceNumber?.value,
+    });
+  });
+debugger
+this.productService.transferStock(data).subscribe({
       next: (res:any) => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Purchase saved successfully!' });
         this.productpurchase = [];
@@ -286,10 +288,10 @@ this.productService.purchase(data).subscribe({
   });
 
  
-  }
+  
 }
 sumTotal(): number {
-  return this.productpurchase.reduce((acc, x) => acc + x.purchasePrice, 0);
+  return this.productpurchase.reduce((acc, x) => acc + x.saleprice, 0);
 }
   private markFormGroupTouched(): void {
     Object.keys(this.productForm.controls).forEach(key => {

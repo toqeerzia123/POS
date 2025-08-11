@@ -61,6 +61,26 @@ purchase(data:any){
  return   this.http.post('https://localhost:44311/api/services/app/Purchase/Create', data);
 
 }
+
+transferStock(data:any){
+ return   this.http.post('https://localhost:44311/api/services/app/StockTransfer/Create', data);
+
+}
+
+receiveStock(data:any){
+ return   this.http.get('https://localhost:44311/api/services/app/StockTransfer/GetAll', data);
+
+}
+
+takeStock(invoiceId:string,locationId:string){
+    var body = {
+        locationId: locationId,
+        invoiceId: invoiceId
+
+    }
+ return   this.http.post('https://localhost:44311/api/services/app/Inventory/Create', body);
+
+}
     getProductsWithOrdersData() {
         return [
             {

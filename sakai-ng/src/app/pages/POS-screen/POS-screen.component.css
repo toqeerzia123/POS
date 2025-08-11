@@ -1,0 +1,21 @@
+/* Same styles you had for glass and table scroll */
+
+.glass { 
+  background: rgba(255,255,255,.05); 
+  backdrop-filter: blur(8px); 
+  border: 1px solid rgba(255,255,255,0.1); 
+}
+
+table th, table td { text-align: center; }
+
+tbody { 
+  display: block; 
+  max-height: 300px; 
+  overflow-y: auto; 
+}
+
+thead, tbody tr { 
+  display: table; 
+  width: 100%; 
+  table-layout: fixed; 
+}

@@ -23,6 +23,10 @@ export class AppMenu {
     {
         label: 'Home',
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
+    },    
+     {
+        label: 'POS',
+        items: [{ label: 'POS', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pos'] }]
     },            
     {
         label: 'POS Management',
@@ -69,6 +73,11 @@ export class AppMenu {
                 icon: 'pi pi-fw pi-history',
                 routerLink: ['/pages/purchase-stock']
             },
+              {
+                label: 'Receive Stock',
+                icon: 'pi pi-fw pi-send',
+                routerLink: ['/pages/receive-stock']
+            },
         ]
     },
     {
@@ -76,6 +85,7 @@ export class AppMenu {
         icon: 'pi pi-fw pi-chart-line',
         routerLink: ['/pages'],
         items: [
+          
             {
                 label: 'sales History',
                 icon: 'pi pi-fw pi-list',

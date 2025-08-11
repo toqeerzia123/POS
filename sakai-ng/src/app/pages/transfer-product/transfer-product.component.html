@@ -338,8 +338,7 @@
                     <td style="min-width: 12rem">{{ product.name }}</td>
                     <td>{{ product.saleprice | currency: 'USD' }}</td>
                     <td>{{ product.quantity}}</td>
-                      <td>{{ product.purchasePrice }}</td>
-                         <td>{{ product.purchasePrice}}</td>
+                         <td>{{ product.saleprice*product.quantity}}</td>
                   
                     <td>
 
@@ -384,7 +383,7 @@
                     </th>
                  
                   
-                    <th style="min-width: 12rem"> <p-button (click)="SaveInoice()" label="Transfer Now" severity="success" /></th>
+                    <th style="min-width: 12rem"> <p-button (click)="transferStock()" label="Transfer Now" severity="success" /></th>
                 </tr>
             </ng-template>
             <ng-template #body let-product>

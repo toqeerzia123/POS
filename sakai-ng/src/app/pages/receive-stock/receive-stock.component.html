@@ -1,0 +1,191 @@
+<div class="card">
+            <div class="font-semibold text-xl mb-4">Filtering</div>
+            <p-table
+                #dt1
+                [value]="stock"
+                dataKey="id"
+                [rows]="10"
+                [loading]="loading"
+                [rowHover]="true"
+                [showGridlines]="true"
+                [paginator]="true"
+                [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+                responsiveLayout="scroll"
+            >
+                <ng-template #caption>
+                    <div class="flex justify-between items-center flex-column sm:flex-row">
+                        <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                        <p-iconfield iconPosition="left" class="ml-auto">
+                            <p-inputicon>
+                                <i class="pi pi-search"></i>
+                            </p-inputicon>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Search keyword" />
+                        </p-iconfield>
+                    </div>
+                </ng-template>
+                <ng-template #header>
+                    <tr>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-between items-center">
+                                Invoice No
+                                <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                            </div>
+                        </th>
+                    
+                        <th style="min-width: 14rem">
+                            <div class="flex justify-between items-center">
+                                Transfer From
+                                <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                    <ng-template #header>
+                                        <div class="px-3 pt-3 pb-0">
+                                            <span class="font-bold">Agent Picker</span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #filter let-value let-filter="filterCallback">
+                                        <p-multiselect [ngModel]="value" [options]="representatives" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name" styleClass="w-full">
+                                            <ng-template let-option #item>
+                                                <div class="flex items-center gap-2 w-44">
+                                                    <img [alt]="option.label" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ option.image }}" width="32" />
+                                                    <span>{{ option.name }}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiselect>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-between items-center">
+                               Receive Date
+                                <p-columnFilter type="date" field="date" display="menu" placeholder="mm/dd/yyyy"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-between items-center">
+                                Quntity
+                                <p-columnFilter type="numeric" field="balance" display="menu" currency="USD"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-between items-center">
+                                Status
+                                <p-columnFilter field="status" matchMode="equals" display="menu">
+                                    <ng-template #filter let-value let-filter="filterCallback">
+                                        <p-select [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any" [style]="{ 'min-width': '12rem' }">
+                                            <ng-template let-option #item>
+                                                <span [class]="'customer-badge status-' + option.value">{{ option.label }}</span>
+                                            </ng-template>
+                                        </p-select>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                    <th>Options</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-customer>
+                    <tr>
+                        <td>
+                            {{customer.invoiceNo}}
+                        </td>
+                        <td>
+                         {{customer.transferFrom}}
+                        </td>
+                        <td>
+                       {{customer.transferDate | date:'MM/dd/yyyy'}}
+                        </td>
+                        <td>
+                           {{customer.totalQuantity}}
+                        </td>
+                   
+                        <td>
+                            <p-tag [value]="customer.status.toLowerCase()" [severity]="getSeverity(customer.status.toLowerCase())" styleClass="dark:bg-surface-900!" />
+                        </td>
+                       <td>
+<p-button 
+    icon="pi pi-eye" 
+    severity="info" 
+    [rounded]="true" 
+    [outlined]="true" 
+    (click)="ViewRequest(customer)" 
+/>
+                       </td>
+                      
+                    </tr>
+                </ng-template>
+                <ng-template #emptymessage>
+                    <tr>
+                        <td colspan="8">No customers found.</td>
+                    </tr>
+                </ng-template>
+                <ng-template #loadingbody>
+                    <tr>
+                        <td colspan="8">Loading customers data. Please wait.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+<div class="card">
+  <p-dialog 
+      header="📦 Stock Transfer Details" 
+      [(visible)]="display" 
+      [breakpoints]="{ '960px': '75vw' }" 
+      [style]="{ width: '70vw', height: '80vh' }" 
+      [modal]="true"
+      [contentStyle]="{ 'overflow-y': 'auto' }">
+
+    <div class="space-y-4">
+      
+      <!-- Invoice Info -->
+      <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg shadow border">
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div><strong>Invoice No:</strong> {{ invoiceDetail?.invoiceNo }}</div>
+          <div><strong>Transfer Date:</strong> {{ invoiceDetail?.transferDate | date:'medium' }}</div>
+          <div><strong>Total Quantity:</strong> {{ invoiceDetail?.totalQuantity }}</div>
+          <div><strong>Transfer From:</strong> {{ invoiceDetail?.transferFrom }}</div>
+          <div class="col-span-2">
+            <strong>Status:</strong> 
+            <p-tag 
+              [value]="invoiceDetail?.status" 
+              [severity]="invoiceDetail?.status === 'INPROGRESS' ? 'warning' : 'success'">
+            </p-tag>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Table -->
+      <div class="bg-white rounded-lg shadow border p-2">
+        <p-table 
+          [value]="invoiceDetail?.products" 
+          scrollable="true" 
+          scrollHeight="400px"
+          [tableStyle]="{ 'min-width': '100%' }" 
+          styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+          
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="bg-blue-50">Product Name</th>
+              <th class="bg-blue-50">Category</th>
+              <th class="text-right bg-blue-50">Quantity</th>
+            </tr>
+          </ng-template>
+          
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td>{{ product?.productName }}</td>
+              <td>{{ product?.productCategory }}</td>
+              <td class="text-right">{{ product?.quantity }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <ng-template #footer>
+      <p-button label="Cancel" icon="pi pi-times" (click)="display=false" severity="secondary" class="mr-2" />
+      <p-button label="Take Stock" icon="pi pi-check" (click)="takeAction(invoiceDetail?.invoiceNo)"  severity="success" />
+    </ng-template>
+  </p-dialog>
+</div>
+

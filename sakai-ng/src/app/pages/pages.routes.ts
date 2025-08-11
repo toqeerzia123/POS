@@ -17,6 +17,8 @@ import { CategoriesComponent } from './categories/categories.component';
 import { BarcodeComponent } from './barcode/barcode.component';
 import { TransferProductComponent } from './transfer-product/transfer-product.component';
 import { PurchaseProductComponent } from './purchase-product/purchase-product.component';
+import { ReceiveStockComponent } from './receive-stock/receive-stock.component';
+import { POSScreenComponent } from './POS-screen/POS-screen.component';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -37,6 +39,8 @@ export default [
     { path: 'barcode', component: BarcodeComponent },
     { path: 'purchase-stock', component: PurchaseProductComponent },
     { path: 'transfer-stock', component: TransferProductComponent },
+    { path: 'receive-stock', component: ReceiveStockComponent },
+    { path: 'pos', component: POSScreenComponent },
 
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;
